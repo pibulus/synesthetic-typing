@@ -316,6 +316,10 @@ export class SparkleModule {
     }
   }
 
+  setConfig(config) {
+    Object.assign(this.config, config);
+  }
+
   enable() {
     this.config.enabled = true;
   }

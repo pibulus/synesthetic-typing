@@ -36,10 +36,6 @@ export class JuicyTyping {
       lastKeyTime: Date.now()
     };
 
-    // Particle pool for performance
-    this.particlePool = [];
-    this.maxPoolSize = 100;
-
     // Initialize
     this.initialized = false;
   }
@@ -61,9 +57,6 @@ export class JuicyTyping {
 
     // Attach to existing elements
     this.attachToElements();
-
-    // Create particle pool
-    this.initParticlePool();
 
     this.initialized = true;
     this.log('✨ JuicyTyping ready!');
@@ -303,72 +296,6 @@ export class JuicyTyping {
     };
   }
 
-  // ===================================================================
-  // PARTICLE SYSTEM (POOLED FOR PERFORMANCE)
-  // ===================================================================
-
-  initParticlePool() {
-    // Pre-create particles for reuse
-    for (let i = 0; i < this.maxPoolSize; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'juicy-particle';
-      particle.style.cssText = `
-        position: fixed;
-        pointer-events: none;
-        z-index: 100000;
-        will-change: transform, opacity;
-        display: none;
-      `;
-      document.body.appendChild(particle);
-      this.particlePool.push(particle);
-    }
-  }
-
-  getParticle() {
-    // Get a particle from pool or create new if needed
-    for (let particle of this.particlePool) {
-      if (particle.style.display === 'none') {
-        return particle;
-      }
-    }
-
-    // All particles in use, reuse the oldest one
-    return this.particlePool[0];
-  }
-
-  releaseParticle(particle) {
-    particle.style.display = 'none';
-    particle.style.animation = '';
-    particle.className = 'juicy-particle';
-  }
-
-  createParticle(options) {
-    const particle = this.getParticle();
-
-    particle.style.left = `${options.x}px`;
-    particle.style.top = `${options.y}px`;
-    particle.style.width = `${options.size || 3}px`;
-    particle.style.height = `${options.size || 3}px`;
-    particle.style.background = options.color || '#ff0080';
-    particle.style.borderRadius = options.shape === 'square' ? '0' : '50%';
-    particle.style.boxShadow = options.glow ? `0 0 ${options.glowSize || 10}px ${options.color}` : '';
-    particle.style.display = 'block';
-
-    if (options.animation) {
-      particle.style.animation = options.animation;
-    }
-
-    if (options.className) {
-      particle.className += ' ' + options.className;
-    }
-
-    // Auto-release after duration
-    setTimeout(() => {
-      this.releaseParticle(particle);
-    }, options.duration || 1000);
-
-    return particle;
-  }
 
   // ===================================================================
   // PUBLIC API
@@ -393,11 +320,6 @@ export class JuicyTyping {
     if (this.observer) {
       this.observer.disconnect();
     }
-
-    // Remove particle pool
-    this.particlePool.forEach(particle => {
-      particle.remove();
-    });
 
     // Cleanup modules
     this.modules.forEach((module, name) => {

@@ -200,17 +200,30 @@ export class TrailModule {
     const animation = animationMap[this.config.style] || 'juicy-trail-fade';
     const duration = this.config.fadeTime + (index * 50);
 
-    this.engine.createParticle({
-      x: position.x + offsetX,
-      y: position.y + offsetY,
-      size: size,
-      color: color,
-      glow: this.config.style === 'neon',
-      glowSize: 10 + intensity * 10,
-      animation: `${animation} ${duration}ms ease-out forwards`,
-      className: 'juicy-trail-particle',
-      duration: duration
-    });
+    // Self-cleaning DOM particle — same pattern as Sparkle/Ripple modules
+    // (the engine no longer keeps a shared pool; each module owns its nodes).
+    const particle = document.createElement('div');
+    particle.className = 'juicy-particle juicy-trail-particle';
+    const glow = this.config.style === 'neon'
+      ? `box-shadow: 0 0 ${10 + intensity * 10}px ${color};`
+      : '';
+    particle.style.cssText = `
+      position: fixed;
+      left: ${position.x + offsetX}px;
+      top: ${position.y + offsetY}px;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${color};
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100000;
+      will-change: transform, opacity;
+      ${glow}
+      animation: ${animation} ${duration}ms ease-out forwards;
+    `;
+
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), duration);
 
     this.colorIndex++;
   }
@@ -267,6 +280,10 @@ export class TrailModule {
   }
 
   // Configuration methods
+  setConfig(config) {
+    Object.assign(this.config, config);
+  }
+
   setStyle(style) {
     this.config.style = style;
   }
