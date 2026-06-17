@@ -10,6 +10,34 @@ export const themes = {
   // PABLO'S SIGNATURE THEMES
   // ===================================================================
 
+  'vintage-rainbow': {
+    name: 'Vintage Rainbow',
+    description: 'Sun-faded Kodachrome — warm, aged, lush 70s rainbow',
+    colors: [
+      '#e8704a', // Persimmon
+      '#f4a93c', // Marigold
+      '#ecc94b', // Faded Gold
+      '#8caa6a', // Dusty Sage
+      '#4a9d9c', // Muted Teal
+      '#9a6a9e'  // Dusty Plum
+    ],
+    trail: {
+      style: 'vhs',      // subtle blur = aged-film warmth
+      intensity: 0.85,
+      ghosting: true
+    },
+    sparkle: {
+      colors: ['#e8704a', '#f4a93c', '#ecc94b', '#d98a96'], // warm spectrum + dusty rose
+      size: 'medium',
+      burstMode: true
+    },
+    ripple: {
+      color: '#e8704a',
+      size: 70,
+      duration: 700      // slower, softer = vintage
+    }
+  },
+
   'brutal-rainbow': {
     name: 'Brutal Rainbow',
     description: 'High-energy VHS aesthetic',
