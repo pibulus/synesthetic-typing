@@ -138,11 +138,7 @@ export class TrailModule {
     if (!this.config.enabled) return;
 
     const { cursorPosition, intensity, key } = context;
-
-    // Skip modifier keys
-    if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'].includes(key)) {
-      return;
-    }
+    // (modifier/non-printing keys already filtered by the engine)
 
     // Add to trail history
     this.addToTrail(context);

@@ -21,8 +21,12 @@ export class JuicyTyping {
       target: options.target || document.body,
       selector: options.selector || 'input[type="text"], input[type="search"], input[type="email"], input[type="password"], textarea, [contenteditable="true"]',
       debug: options.debug ?? false,
+      minEffectInterval: options.minEffectInterval ?? 16, // ms; ~60fps ceiling on effect spawns
       ...options
     };
+
+    // Throttle clock for effect spawning (guards key-repeat floods)
+    this.lastEffectTime = 0;
 
     // Module registry
     this.modules = new Map();
@@ -179,8 +183,16 @@ export class JuicyTyping {
   onKeyDown(event) {
     if (!this.config.enabled) return;
 
-    // Update stats
+    // Skip non-printing / modifier / navigation keys so effects only fire on
+    // real character input. Centralized here so EVERY module is consistent.
+    if (this.isNonPrintingKey(event.key)) return;
+
+    // Throttle to avoid flooding effects when a key is held down (key-repeat).
     const now = Date.now();
+    if (now - this.lastEffectTime < this.config.minEffectInterval) return;
+    this.lastEffectTime = now;
+
+    // Update stats
     const timeSinceLastKey = now - this.stats.lastKeyTime;
     this.stats.lastKeyTime = now;
     this.stats.keystrokes++;
@@ -200,6 +212,15 @@ export class JuicyTyping {
         module.onKeyDown(context);
       }
     });
+  }
+
+  // Keys that shouldn't trigger effects: modifiers, navigation, function keys.
+  // A real character key has a single-char `key` (e.g. "a", "7", " ").
+  isNonPrintingKey(key) {
+    if (!key) return true;
+    if (key.length === 1) return false; // printable char (incl. space)
+    // Allow Enter/Backspace through (modules may want them); skip the rest.
+    return key !== 'Enter' && key !== 'Backspace';
   }
 
   onKeyUp(event) {
