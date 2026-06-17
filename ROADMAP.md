@@ -4,6 +4,18 @@
 
 ---
 
+## 🧹 **2026-06-16 — Repo cleanup done**
+The project had **three** competing implementations tangled together. Sorted out:
+- ✅ **`src/JuicyTyping.js` (v2) is now the single canonical codebase** — modular engine + `modules/` (Trail, Sparkle, Ripple) + `themes.js`. This is what `demo/index.html` loads.
+- 🗑️ **Deleted dead v1:** `synesthetic-typing.js` (old monolith), `cyberpunk-effects.js` (orphan, referenced by nothing), `styles.css` (v1-era, unused). All recoverable from the baseline git commit.
+- 🔧 **`package.json` fixed** → v2.0.0, `type: module`, `main`/`exports`/`files` point at `src/`.
+- 📝 **README rewritten to the real v2 API** (no more phantom `SynestheticTyping`/`setColors`).
+- **Audio is OUT of scope here** — it lives in the sibling `juicy-sounds` project. The "synced audio+visual" goal = wiring the two together later.
+
+**So "What's Broken" below is now just ONE real thing:** the DOM→Canvas particle rewrite (Phase 1). The version confusion is gone.
+
+---
+
 ## 🔍 **Current Status Assessment**
 
 ### ✅ **What Works (from juicy-sounds)**

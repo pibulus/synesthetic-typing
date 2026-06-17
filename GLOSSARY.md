@@ -1,10 +1,10 @@
 # GLOSSARY.md
 
 ## Core Files
-**JuicyTyping.js** - Main modular engine class
-**synesthetic-typing.js** - Standalone bundle version
-**cyberpunk-effects.js** - Cyberpunk theme preset
-**themes.js** - Theme definitions and presets
+**src/JuicyTyping.js** - Main modular engine class (the one canonical core)
+**src/modules/** - Effect modules: Trail, Sparkle, Ripple
+**src/themes.js** - 10 built-in theme definitions + helpers
+**demo/index.html** - Live playground that loads everything
 
 ## Main Class
 **JuicyTyping** - Core engine managing modules, stats, particle pools

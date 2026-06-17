@@ -24,10 +24,11 @@ Check out the live demo at `demo/index.html` or:
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/juicy-typing.git
+git clone https://github.com/pibulus/synesthetic-typing.git
+cd synesthetic-typing
 
-# Open demo
-open juicy-typing/demo/index.html
+# Serve (ES modules need http://, not file://)
+npm run demo          # → http://localhost:8021/demo/
 ```
 
 ## 🚀 Quick Start
@@ -58,63 +59,55 @@ That's it! Every text input on your page now has magical typing effects.
 
 ## ⚙️ Configuration Options
 
+The engine takes core options; effects are configured per-module.
+
 ```javascript
-const synesthetic = new SynestheticTyping({
-    // Target element (default: document.body)
+const juicy = new JuicyTyping({
+    // Where to look for inputs (default: document.body)
     target: document.body,
 
-    // Color palette - Neo Tokyo by default
-    colors: [
-        '#ff0080', // Brutal Pink
-        '#ffff00', // Electric Yellow
-        '#ff8000', // Neon Orange
-        '#c080ff', // Punk Purple
-        '#00ffff', // Cyber Blue
-        '#00ff80'  // Neo Green
-    ],
+    // Which elements get effects (default: common text inputs + contenteditable)
+    selector: 'input[type="text"], textarea, [contenteditable="true"]',
 
-    // Effect intensity multiplier (0-2, default: 1.0)
-    effectIntensity: 1.0,
-
-    // Enable sound effects (default: false)
-    soundEnabled: false,
-
-    // Maximum number of trail particles (default: 15)
-    maxTrailLength: 15,
-
-    // Characters that trigger word completion effects
-    wordCompleteChars: [' ', '.', '!', '?', '\n']
+    enabled: true,   // start active
+    debug: false     // console logging
 });
+
+// Each module has its own options:
+juicy.registerModule('sparkle', new SparkleModule({
+    threshold: 0.3,        // min typing-intensity (0-1) to trigger
+    particleCount: 5,
+    colors: 'rainbow',     // 'rainbow' | 'monochrome' | 'gradient'
+    spread: 30             // px burst radius
+}));
 ```
 
-## 🎨 Built-in Color Themes
+## 🎨 Built-in Themes
+
+Themes live in `src/themes.js` and are applied across all active modules:
 
 ```javascript
-// Neo Tokyo (default)
-synesthetic.setColors(['#ff0080', '#ffff00', '#ff8000', '#c080ff', '#00ffff', '#00ff80']);
+import { getTheme, applyTheme } from './src/themes.js';
 
-// Classic Terminal
-synesthetic.setColors(['#00ff00', '#00ff00', '#00aa00', '#008800', '#006600', '#004400']);
-
-// Warm Sunset
-synesthetic.setColors(['#ff6b35', '#f7931e', '#ffd23f', '#06ffa5', '#5b2c87', '#3a0ca3']);
-
-// Cool Ocean
-synesthetic.setColors(['#0077be', '#00a8cc', '#7209b7', '#560bad', '#480ca8', '#3a0ca3']);
+const modules = { trail: trailModule, sparkle: sparkleModule, ripple: rippleModule };
+applyTheme(getTheme('pastel-dream'), modules);
 ```
+
+Available: `brutal-rainbow` (default) · `pastel-dream` · `cyberpunk-neon` · `wizard-purple` · `sunset-vibes` · `ocean-wave` · `matrix-green` · `cotton-candy` · `fire-ice` · `minimal-mono`
 
 ## 🎯 API Methods
 
 ```javascript
-// Change effect intensity on the fly
-synesthetic.setIntensity(1.5);
+// Modules
+juicy.registerModule('trail', new TrailModule());
+juicy.enableModule('trail');
+juicy.disableModule('trail');
 
-// Change color palette
-synesthetic.setColors(['#ff0000', '#00ff00', '#0000ff']);
-
-// Enable/disable for specific inputs
-synesthetic.enable();  // Re-scan for inputs
-synesthetic.disable(); // Remove all effects
+// Engine
+juicy.enable();        // turn effects on
+juicy.disable();       // turn effects off (keeps listeners)
+juicy.getStats();      // { keystrokes, averageSpeed, peakSpeed, ... }
+juicy.destroy();       // detach everything, clean up
 ```
 
 ## 🎮 Effect Types
@@ -144,23 +137,12 @@ synesthetic.disable(); // Remove all effects
 - Comet trails with glowing tails
 - Shows you're in "the zone"
 
-## 🔊 Audio Features
+## 🔊 Audio
 
-Enable sound for retro keyboard effects:
-
-```javascript
-const synesthetic = new SynestheticTyping({
-    soundEnabled: true
-});
-
-// Or toggle later
-synesthetic.soundEnabled = true;
-```
-
-- Synthesized sine wave key sounds
-- Randomized pitch for each keystroke
-- Non-intrusive volume levels
-- Gracefully degrades if audio unavailable
+This library is **visuals only** — by design. For keystroke *sound* (real Cherry MX
+recordings, speed-responsive volume), pair it with its sibling project
+**[juicy-sounds](../juicy-sounds)**. The long-term goal is one synesthetic combo:
+juicy-sounds (audio) + synesthetic-typing (visuals), synced per keystroke. See `ROADMAP.md`.
 
 ## 🌍 Browser Support
 
@@ -196,14 +178,19 @@ Perfect for poetry apps, creative writing tools, and artistic interfaces.
 ## 🛠 Development
 
 ```bash
-# Clone the repository
 git clone https://github.com/pibulus/synesthetic-typing.git
+cd synesthetic-typing
 
-# Open demo in browser
-open demo.html
+# ES modules need http:// (won't run from file://)
+npm run demo        # → http://localhost:8021/demo/
+```
 
-# Or serve with Python
-python -m http.server 8000
+**Project layout:**
+```
+src/JuicyTyping.js     core engine (event loop, particle pool, module registry)
+src/modules/           TrailModule · SparkleModule · RippleModule
+src/themes.js          10 built-in themes + helpers
+demo/index.html        live playground (loads everything)
 ```
 
 ## 📄 License

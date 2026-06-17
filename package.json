@@ -1,12 +1,20 @@
 {
   "name": "synesthetic-typing",
-  "version": "1.0.0",
-  "description": "VHS-style rainbow typing effects that turn any text input into a synesthetic experience",
-  "main": "synesthetic-typing.js",
+  "version": "2.0.0",
+  "description": "Modular, framework-agnostic typing-effects library — particle trails, sparkles & ripples on any text input. Like Tetris Effect, but for typing.",
+  "type": "module",
+  "main": "src/JuicyTyping.js",
+  "module": "src/JuicyTyping.js",
+  "exports": {
+    ".": "./src/JuicyTyping.js",
+    "./themes": "./src/themes.js",
+    "./modules/trail": "./src/modules/TrailModule.js",
+    "./modules/sparkle": "./src/modules/SparkleModule.js",
+    "./modules/ripple": "./src/modules/RippleModule.js"
+  },
   "scripts": {
-    "demo": "python -m http.server 8021 || python3 -m http.server 8021",
-    "dev": "python -m http.server 8021 || python3 -m http.server 8021",
-    "serve": "npx serve .",
+    "demo": "python3 -m http.server 8021 || python -m http.server 8021",
+    "dev": "python3 -m http.server 8021 || python -m http.server 8021",
     "test": "echo \"Tests coming soon!\"",
     "build": "echo \"Build script for minification coming soon!\""
   },
@@ -44,8 +52,8 @@
   },
   "homepage": "https://github.com/pibulus/synesthetic-typing#readme",
   "files": [
-    "synesthetic-typing.js",
-    "demo.html",
+    "src",
+    "demo",
     "README.md",
     "LICENSE"
   ],
