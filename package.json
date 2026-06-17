@@ -1,0 +1,66 @@
+{
+  "name": "synesthetic-typing",
+  "version": "1.0.0",
+  "description": "VHS-style rainbow typing effects that turn any text input into a synesthetic experience",
+  "main": "synesthetic-typing.js",
+  "scripts": {
+    "demo": "python -m http.server 8021 || python3 -m http.server 8021",
+    "dev": "python -m http.server 8021 || python3 -m http.server 8021",
+    "serve": "npx serve .",
+    "test": "echo \"Tests coming soon!\"",
+    "build": "echo \"Build script for minification coming soon!\""
+  },
+  "keywords": [
+    "typing",
+    "effects",
+    "vhs",
+    "rainbow",
+    "particles",
+    "animation",
+    "synesthetic",
+    "ui",
+    "ux",
+    "keyboard",
+    "input",
+    "vanilla-js",
+    "cyberpunk",
+    "neon",
+    "retro",
+    "game-like",
+    "interactive"
+  ],
+  "author": {
+    "name": "Pablo Alvarado",
+    "email": "pibulus@gmail.com",
+    "url": "https://github.com/pibulus"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pibulus/synesthetic-typing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pibulus/synesthetic-typing/issues"
+  },
+  "homepage": "https://github.com/pibulus/synesthetic-typing#readme",
+  "files": [
+    "synesthetic-typing.js",
+    "demo.html",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/pibulus"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JuicyTyping - Magical Typing Effects Playground</title>
+
+  <style>
+    /* ===================================================================
+       PABLO'S PASTEL-PUNK DESIGN SYSTEM
+    =================================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      color: white;
+      text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.9);
+      font-weight: 300;
+    }
+
+    /* Main Container */
+    .container {
+      width: 100%;
+      max-width: 900px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    /* Test Areas */
+    .test-area {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.1),
+        0 2px 10px rgba(0,0,0,0.05);
+      border: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .test-area:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 15px 50px rgba(0,0,0,0.15),
+        0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .test-area h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #667eea;
+      font-weight: 700;
+    }
+
+    /* Input Fields */
+    input[type="text"],
+    input[type="email"],
+    input[type="search"],
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: 3px solid #e0e0e0;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      background: #f9f9f9;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    /* Content Editable */
+    .content-editable {
+      min-height: 100px;
+      padding: 1rem;
+      border: 3px solid #e0e0e0;
+      border-radius: 12px;
+      background: #f9f9f9;
+      outline: none;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .content-editable:focus {
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Controls */
+    .controls {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.1),
+        0 2px 10px rgba(0,0,0,0.05);
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .controls h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #764ba2;
+      font-weight: 700;
+    }
+
+    .control-group {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .control-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .control-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+      color: #555;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Theme Selector */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .theme-btn {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .theme-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .theme-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Module Toggles */
+    .module-toggles {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 25px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .toggle-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    /* Stats Display */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Fun gradient text effect */
+    .rainbow-text {
+      background: linear-gradient(
+        90deg,
+        #ff0080, #ff8000, #ffff00,
+        #00ff80, #00ffff, #c080ff,
+        #ff0080
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: rainbow-slide 3s linear infinite;
+    }
+
+    @keyframes rainbow-slide {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .test-area,
+      .controls {
+        padding: 1.5rem;
+      }
+
+      .theme-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <span class="rainbow-text">JuicyTyping</span>
+    </h1>
+    <p class="tagline">Transform your typing into a synesthetic experience ✨</p>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Test Areas -->
+    <div class="test-area">
+      <h2>📝 Single Line Input</h2>
+      <input type="text" placeholder="Type here to see the magic..." />
+    </div>
+
+    <div class="test-area">
+      <h2>✉️ Email Input</h2>
+      <input type="email" placeholder="your@email.com" />
+    </div>
+
+    <div class="test-area">
+      <h2>🔍 Search Input</h2>
+      <input type="search" placeholder="Search for something magical..." />
+    </div>
+
+    <div class="test-area">
+      <h2>📖 Text Area</h2>
+      <textarea placeholder="Write your story here..."></textarea>
+    </div>
+
+    <div class="test-area">
+      <h2>✏️ Content Editable</h2>
+      <div class="content-editable" contenteditable="true">
+        Click here and start typing. This is a contenteditable div!
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <h2>🎮 Controls</h2>
+
+      <!-- Theme Selector -->
+      <div class="control-group">
+        <label class="control-label">Theme</label>
+        <div class="theme-grid" id="theme-selector">
+          <!-- Themes will be added dynamically -->
+        </div>
+      </div>
+
+      <!-- Module Toggles -->
+      <div class="control-group">
+        <label class="control-label">Modules</label>
+        <div class="module-toggles" id="module-toggles">
+          <button class="toggle-btn active" data-module="trail">Trail</button>
+          <button class="toggle-btn active" data-module="sparkle">Sparkle</button>
+          <button class="toggle-btn active" data-module="ripple">Ripple</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="control-group">
+        <label class="control-label">Typing Stats</label>
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="stat-keystrokes">0</div>
+            <div class="stat-label">Keystrokes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-speed">0</div>
+            <div class="stat-label">WPM</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-peak">0</div>
+            <div class="stat-label">Peak WPM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Toggle -->
+      <div class="control-group">
+        <button class="toggle-btn active" id="master-toggle" style="width: 100%;">
+          Effects: ON
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import JuicyTyping from '../src/JuicyTyping.js';
+    import { TrailModule } from '../src/modules/TrailModule.js';
+    import { SparkleModule } from '../src/modules/SparkleModule.js';
+    import { RippleModule } from '../src/modules/RippleModule.js';
+    import { themes, getTheme, applyTheme } from '../src/themes.js';
+
+    // Initialize JuicyTyping
+    const juicy = new JuicyTyping({
+      debug: true,
+      enabled: true
+    });
+
+    // Create modules
+    const trailModule = new TrailModule();
+    const sparkleModule = new SparkleModule();
+    const rippleModule = new RippleModule();
+
+    // Register modules
+    juicy.registerModule('trail', trailModule);
+    juicy.registerModule('sparkle', sparkleModule);
+    juicy.registerModule('ripple', rippleModule);
+
+    // Initialize and enable all modules
+    juicy.init().then(() => {
+      juicy.enableModule('trail');
+      juicy.enableModule('sparkle');
+      juicy.enableModule('ripple');
+
+      // Apply default theme
+      const defaultTheme = getTheme('brutal-rainbow');
+      applyThemeToModules(defaultTheme);
+    });
+
+    // Helper function to apply theme
+    function applyThemeToModules(theme) {
+      const modules = {
+        trail: trailModule,
+        sparkle: sparkleModule,
+        ripple: rippleModule
+      };
+      applyTheme(theme, modules);
+    }
+
+    // Setup theme selector
+    const themeSelector = document.getElementById('theme-selector');
+    Object.keys(themes).forEach(themeName => {
+      const btn = document.createElement('button');
+      btn.className = 'theme-btn';
+      btn.textContent = themes[themeName].name;
+      btn.dataset.theme = themeName;
+
+      if (themeName === 'brutal-rainbow') {
+        btn.classList.add('active');
+      }
+
+      btn.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Apply theme
+        const theme = getTheme(themeName);
+        applyThemeToModules(theme);
+      });
+
+      themeSelector.appendChild(btn);
+    });
+
+    // Setup module toggles
+    document.getElementById('module-toggles').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('toggle-btn')) return;
+
+      const moduleName = e.target.dataset.module;
+      const isActive = e.target.classList.contains('active');
+
+      if (isActive) {
+        juicy.disableModule(moduleName);
+        e.target.classList.remove('active');
+      } else {
+        juicy.enableModule(moduleName);
+        e.target.classList.add('active');
+      }
+    });
+
+    // Master toggle
+    document.getElementById('master-toggle').addEventListener('click', (e) => {
+      const isActive = e.target.classList.contains('active');
+
+      if (isActive) {
+        juicy.disable();
+        e.target.classList.remove('active');
+        e.target.textContent = 'Effects: OFF';
+      } else {
+        juicy.enable();
+        e.target.classList.add('active');
+        e.target.textContent = 'Effects: ON';
+      }
+    });
+
+    // Update stats periodically
+    setInterval(() => {
+      const stats = juicy.getStats();
+      document.getElementById('stat-keystrokes').textContent = stats.keystrokes;
+      document.getElementById('stat-speed').textContent = Math.round(stats.averageSpeed);
+      document.getElementById('stat-peak').textContent = Math.round(stats.peakSpeed);
+    }, 100);
+  </script>
+</body>
+</html>

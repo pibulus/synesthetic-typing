@@ -1,0 +1,36 @@
+# Launch hints for Launch Arsenal.
+# Edit aggressively. These fields should pin the app's real audience, problem, and promise.
+name: synesthetic-typing
+slug: synesthetic-typing
+app_type: web-app
+audience: people who already feel the problem
+problem: 'the existing way still feels heavier, foggier, or slower than it should'
+promise: "\U0001F3A8 10+ Beautiful Themes - From brutal rainbow to pastel dreams"
+cta: 'See it at https://github.com/pibulus/synesthetic-typing#readme'
+differentiators:
+  - "\U0001F3A8 10+ Beautiful Themes - From brutal rainbow to pastel dreams"
+  - >-
+    A modular, framework-agnostic typing effects library that brings personality
+    and joy to any text input
+  - >-
+    ☄️ Bonus Comets (High Speed) - Triggered during very fast typing - Comet
+    trails with glowing tails - Shows you're in "the zone"
+proof_points:
+  - "\U0001F3A8 10+ Beautiful Themes - From brutal rainbow to pastel dreams"
+  - "\U0001F9E9 Modular Architecture - Use only what you need"
+  - "\U0001F680 High Performance - Particle pooling, efficient animations"
+  - "\U0001F4F1 Framework Agnostic - Works with React, Vue, Svelte, or vanilla JS"
+objections:
+  - 'Still wants a human pass on audience, proof, and the sharpest angle.'
+keywords:
+  seed:
+    - typing
+    - effects
+    - vhs
+    - rainbow
+  audience: people who already feel the problem
+  intent:
+    - launch faster
+    - clearer first draft
+manual_notes:
+  - Edit this aggressively. Keep only the lines that feel native to the app.
