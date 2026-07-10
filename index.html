@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=demo/">
+  <title>JuicyTyping 🌈 — typing that sparks joy</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌈</text></svg>">
+  <meta property="og:title" content="JuicyTyping 🌈 — typing that sparks joy">
+  <meta property="og:description" content="Rainbow trails, sparkles &amp; ripples on every keystroke. Framework-agnostic, zero dependencies. Try it live.">
+  <meta property="og:url" content="https://pibulus.github.io/synesthetic-typing/">
+  <meta name="twitter:card" content="summary">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .rainbow {
+      font-size: 5rem;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      letter-spacing: -0.02em;
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    p { opacity: 0.85; }
+
+    a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: #fff;
+      color: #764ba2;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 3px solid rgba(0, 0, 0, 0.15);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    a:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="rainbow">🌈</div>
+  <h1>JuicyTyping</h1>
+  <p>Whisking you off to the playground&hellip;</p>
+  <a href="demo/">✨ Take me there ✨</a>
+</body>
+</html>

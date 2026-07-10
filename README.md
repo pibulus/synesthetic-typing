@@ -8,6 +8,10 @@
 ![License](https://img.shields.io/badge/license-MIT-00ffff)
 ![Size](https://img.shields.io/badge/size-<15kb-00ff80)
 
+### 🎪 [**► Try it live — the playground ◄**](https://pibulus.github.io/synesthetic-typing/demo/)
+
+*No install, no clone. Just type and watch the rainbows.*
+
 ## ✨ Features
 
 - 🎨 **10+ Beautiful Themes** - From brutal rainbow to pastel dreams
@@ -20,7 +24,9 @@
 
 ## 🎮 Try the Demo
 
-Check out the live demo at `demo/index.html` or:
+**Live playground:** https://pibulus.github.io/synesthetic-typing/demo/
+
+Or run it locally:
 
 ```bash
 # Clone the repo
@@ -32,6 +38,26 @@ npm run demo          # → http://localhost:8021/demo/
 ```
 
 ## 🚀 Quick Start
+
+**Zero-install, straight off the CDN** — every file is standalone (no cross-imports), so you can cherry-pick modules:
+
+```html
+<script type="module">
+  import { JuicyTyping } from 'https://cdn.jsdelivr.net/gh/pibulus/synesthetic-typing/src/JuicyTyping.js';
+  import { TrailModule } from 'https://cdn.jsdelivr.net/gh/pibulus/synesthetic-typing/src/modules/TrailModule.js';
+  import { SparkleModule } from 'https://cdn.jsdelivr.net/gh/pibulus/synesthetic-typing/src/modules/SparkleModule.js';
+
+  const juicy = new JuicyTyping();
+  juicy.registerModule('trail', new TrailModule());
+  juicy.registerModule('sparkle', new SparkleModule());
+  juicy.init().then(() => {
+    juicy.enableModule('trail');
+    juicy.enableModule('sparkle');
+  });
+</script>
+```
+
+Or vendored / local:
 
 ```html
 <!-- Include the library -->
