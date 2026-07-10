@@ -235,6 +235,89 @@
       border-color: #667eea;
     }
 
+    /* Tweak Lab */
+    .tweak-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.85rem;
+    }
+
+    .tweak-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #666;
+      min-width: 95px;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.4rem 0.9rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 20px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .pill.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .tweak-slider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.85rem;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .tweak-slider span {
+      min-width: 160px;
+    }
+
+    .tweak-slider input[type="range"] {
+      flex: 1;
+      accent-color: #667eea;
+      cursor: pointer;
+    }
+
+    #copy-config {
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #copy-config:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(118, 75, 162, 0.4);
+    }
+
     /* Stats Display */
     .stats {
       display: grid;
@@ -387,6 +470,56 @@
         </div>
       </div>
 
+      <!-- Tweak Lab -->
+      <div class="control-group">
+        <label class="control-label">🧪 Tweak Lab</label>
+
+        <div class="tweak-row">
+          <span class="tweak-name">Ripple shape</span>
+          <div class="pill-group" id="ripple-shape">
+            <button class="pill active" data-shape="circle">● Circle</button>
+            <button class="pill" data-shape="square">■ Square</button>
+            <button class="pill" data-shape="star">★ Star</button>
+          </div>
+        </div>
+
+        <div class="tweak-row">
+          <span class="tweak-name">Trail style</span>
+          <div class="pill-group" id="trail-style">
+            <button class="pill" data-style="rainbow">Rainbow</button>
+            <button class="pill" data-style="vhs">VHS</button>
+            <button class="pill" data-style="neon">Neon</button>
+            <button class="pill" data-style="pastel">Pastel</button>
+          </div>
+        </div>
+
+        <div class="tweak-row">
+          <span class="tweak-name">Vibes</span>
+          <div class="pill-group">
+            <button class="pill" id="tweak-ghosting">👻 Ghost letters</button>
+            <button class="pill" id="tweak-gravity">🍂 Gravity</button>
+            <button class="pill" id="tweak-burst">💥 Bursts</button>
+          </div>
+        </div>
+
+        <div class="tweak-slider">
+          <span>✨ Sparkle count: <b id="val-count">5</b></span>
+          <input type="range" id="tweak-count" min="1" max="15" value="5">
+        </div>
+
+        <div class="tweak-slider">
+          <span>↔️ Sparkle spread: <b id="val-spread">30</b>px</span>
+          <input type="range" id="tweak-spread" min="10" max="80" value="30">
+        </div>
+
+        <div class="tweak-slider">
+          <span>⏱️ Trail fade: <b id="val-fade">800</b>ms</span>
+          <input type="range" id="tweak-fade" min="300" max="2000" step="50" value="800">
+        </div>
+
+        <button id="copy-config">📋 Copy this recipe</button>
+      </div>
+
       <!-- Stats -->
       <div class="control-group">
         <label class="control-label">Typing Stats</label>
@@ -448,6 +581,7 @@
       // Apply default theme
       const defaultTheme = getTheme('brutal-rainbow');
       applyThemeToModules(defaultTheme);
+      syncTweakLab();
     });
 
     // Helper function to apply theme
@@ -480,6 +614,7 @@
         // Apply theme
         const theme = getTheme(themeName);
         applyThemeToModules(theme);
+        syncTweakLab();
       });
 
       themeSelector.appendChild(btn);
@@ -514,6 +649,153 @@
         e.target.classList.add('active');
         e.target.textContent = 'Effects: ON';
       }
+    });
+
+    // ===================================================================
+    // TWEAK LAB — the raw knobs, no theme required
+    // ===================================================================
+    const $ = (id) => document.getElementById(id);
+
+    $('ripple-shape').addEventListener('click', (e) => {
+      const shape = e.target.dataset.shape;
+      if (!shape) return;
+      rippleModule.setConfig({ style: shape });
+      [...$('ripple-shape').children].forEach(b => b.classList.toggle('active', b === e.target));
+    });
+
+    $('trail-style').addEventListener('click', (e) => {
+      const style = e.target.dataset.style;
+      if (!style) return;
+      trailModule.setConfig({ style });
+      [...$('trail-style').children].forEach(b => b.classList.toggle('active', b === e.target));
+    });
+
+    const vibes = [
+      { btn: 'tweak-ghosting', module: trailModule, key: 'ghosting' },
+      { btn: 'tweak-gravity', module: sparkleModule, key: 'gravity' },
+      { btn: 'tweak-burst', module: sparkleModule, key: 'burstMode' }
+    ];
+    vibes.forEach(({ btn, module, key }) => {
+      $(btn).addEventListener('click', () => {
+        const on = !module.config[key];
+        module.setConfig({ [key]: on });
+        $(btn).classList.toggle('active', on);
+      });
+    });
+
+    const sliders = [
+      { input: 'tweak-count', label: 'val-count', module: sparkleModule, key: 'particleCount' },
+      { input: 'tweak-spread', label: 'val-spread', module: sparkleModule, key: 'spread' },
+      { input: 'tweak-fade', label: 'val-fade', module: trailModule, key: 'fadeTime' }
+    ];
+    sliders.forEach(({ input, label, module, key }) => {
+      $(input).addEventListener('input', (e) => {
+        const value = Number(e.target.value);
+        module.setConfig({ [key]: value });
+        $(label).textContent = value;
+      });
+    });
+
+    // Themes overwrite style/ghosting/gravity/burst, so re-sync the lab UI
+    // from the modules' live config after every theme swap.
+    function syncTweakLab() {
+      [...$('ripple-shape').children].forEach(b =>
+        b.classList.toggle('active', b.dataset.shape === rippleModule.config.style));
+      [...$('trail-style').children].forEach(b =>
+        b.classList.toggle('active', b.dataset.style === trailModule.config.style));
+      $('tweak-ghosting').classList.toggle('active', !!trailModule.config.ghosting);
+      $('tweak-gravity').classList.toggle('active', !!sparkleModule.config.gravity);
+      $('tweak-burst').classList.toggle('active', !!sparkleModule.config.burstMode);
+      $('tweak-count').value = sparkleModule.config.particleCount;
+      $('val-count').textContent = sparkleModule.config.particleCount;
+      $('tweak-spread').value = sparkleModule.config.spread;
+      $('val-spread').textContent = sparkleModule.config.spread;
+      $('tweak-fade').value = trailModule.config.fadeTime;
+      $('val-fade').textContent = trailModule.config.fadeTime;
+    }
+
+    // ===================================================================
+    // COPY RECIPE — turn the current mix into paste-ready code
+    // ===================================================================
+    const CDN = 'https://cdn.jsdelivr.net/gh/pibulus/synesthetic-typing/src';
+
+    function buildRecipe() {
+      const active = [...document.querySelectorAll('#module-toggles .toggle-btn.active')]
+        .map(b => b.dataset.module);
+
+      const moduleMeta = {
+        trail: {
+          className: 'TrailModule',
+          path: `${CDN}/modules/TrailModule.js`,
+          opts: () => ({
+            colors: trailModule.config.colors,
+            style: trailModule.config.style,
+            ghosting: trailModule.config.ghosting,
+            fadeTime: trailModule.config.fadeTime,
+            intensity: trailModule.config.intensity
+          })
+        },
+        sparkle: {
+          className: 'SparkleModule',
+          path: `${CDN}/modules/SparkleModule.js`,
+          opts: () => ({
+            colors: sparkleModule.config.colors,
+            size: sparkleModule.config.size,
+            particleCount: sparkleModule.config.particleCount,
+            spread: sparkleModule.config.spread,
+            burstMode: sparkleModule.config.burstMode,
+            gravity: !!sparkleModule.config.gravity
+          })
+        },
+        ripple: {
+          className: 'RippleModule',
+          path: `${CDN}/modules/RippleModule.js`,
+          opts: () => ({
+            color: rippleModule.config.color,
+            size: rippleModule.config.size,
+            duration: rippleModule.config.duration,
+            style: rippleModule.config.style
+          })
+        }
+      };
+
+      const imports = [`import { JuicyTyping } from '${CDN}/JuicyTyping.js';`];
+      const registrations = [];
+      const enables = [];
+
+      active.forEach(name => {
+        const meta = moduleMeta[name];
+        imports.push(`import { ${meta.className} } from '${meta.path}';`);
+        const opts = JSON.stringify(meta.opts(), null, 2)
+          .split('\n').map((line, i) => i === 0 ? line : '  ' + line).join('\n');
+        registrations.push(`juicy.registerModule('${name}', new ${meta.className}(${opts}));`);
+        enables.push(`  juicy.enableModule('${name}');`);
+      });
+
+      return [
+        '// 🌈 JuicyTyping recipe — cooked in the playground',
+        ...imports,
+        '',
+        'const juicy = new JuicyTyping();',
+        ...registrations,
+        '',
+        'juicy.init().then(() => {',
+        ...enables,
+        '});'
+      ].join('\n');
+    }
+
+    $('copy-config').addEventListener('click', async () => {
+      const btn = $('copy-config');
+      try {
+        await navigator.clipboard.writeText(buildRecipe());
+        btn.textContent = '✅ Copied! Paste it in your app';
+      } catch {
+        // Clipboard blocked — print it instead so nobody leaves empty-handed
+        console.log(buildRecipe());
+        btn.textContent = '👀 Recipe printed to console';
+      }
+      setTimeout(() => { btn.textContent = '📋 Copy this recipe'; }, 2000);
     });
 
     // Update stats periodically
