@@ -203,7 +203,7 @@ export class SparkleModule {
       animation: ${animation} ${duration}ms ease-out forwards;
     `;
 
-    document.body.appendChild(sparkle);
+    (this.config.container || document.body).appendChild(sparkle);
 
     setTimeout(() => {
       sparkle.remove();
@@ -239,7 +239,7 @@ export class SparkleModule {
         animation: juicy-sparkle-burst ${duration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
       `;
 
-      document.body.appendChild(particle);
+      (this.config.container || document.body).appendChild(particle);
 
       setTimeout(() => {
         particle.remove();
@@ -267,7 +267,7 @@ export class SparkleModule {
       animation: juicy-sparkle-spin 300ms ease-out forwards;
     `;
 
-    document.body.appendChild(flash);
+    (this.config.container || document.body).appendChild(flash);
 
     setTimeout(() => {
       flash.remove();

@@ -134,7 +134,7 @@ export class RippleModule {
       ripple.style.border = 'none';
     }
 
-    document.body.appendChild(ripple);
+    (this.config.container || document.body).appendChild(ripple);
 
     setTimeout(() => {
       ripple.remove();
@@ -194,7 +194,7 @@ export class RippleModule {
           animation: juicy-ripple-expand ${duration}ms cubic-bezier(0, 0, 0.2, 1) forwards;
         `;
 
-        document.body.appendChild(ripple);
+        (this.config.container || document.body).appendChild(ripple);
 
         setTimeout(() => {
           ripple.remove();

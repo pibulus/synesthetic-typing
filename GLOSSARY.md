@@ -41,6 +41,7 @@ Each module has:
 **target** - DOM element to attach to
 **selector** - CSS selector for input elements
 **debug** - Console logging flag
+**container** - (per-module) element particles mount into, default document.body
 
 ## Concepts
 **Modular architecture** - Plug-and-play visual effect system

@@ -78,7 +78,8 @@ juicy.registerModule('sparkle', new SparkleModule({
     threshold: 0.3,        // min typing-intensity (0-1) to trigger
     particleCount: 5,
     colors: 'rainbow',     // 'rainbow' | 'monochrome' | 'gradient'
-    spread: 30             // px burst radius
+    spread: 30,            // px burst radius
+    container: myFxLayer   // element particles mount into (default: document.body)
 }));
 ```
 

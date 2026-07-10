@@ -182,9 +182,12 @@ export class TrailModule {
 
   createTrailParticle(position, intensity, index) {
     const color = this.getCurrentColor();
-    const size = 2 + intensity * 3 + Math.random() * 2;
-    const offsetX = (Math.random() - 0.5) * (10 * intensity);
-    const offsetY = (Math.random() - 0.5) * (10 * intensity);
+    // Varied sizes make the trail feel alive (uniform circles look boring): a
+    // small base + a wide random spread so some are tiny specks, some chunky.
+    const size = 2 + Math.random() * Math.random() * 12;
+    // Scatter them a bit more so they don't stack in a tidy line.
+    const offsetX = (Math.random() - 0.5) * 26;
+    const offsetY = (Math.random() - 0.5) * 22;
 
     const animationMap = {
       'rainbow': 'juicy-trail-fade',
@@ -218,7 +221,7 @@ export class TrailModule {
       animation: ${animation} ${duration}ms ease-out forwards;
     `;
 
-    document.body.appendChild(particle);
+    (this.config.container || document.body).appendChild(particle);
     setTimeout(() => particle.remove(), duration);
 
     this.colorIndex++;
@@ -251,7 +254,7 @@ export class TrailModule {
       animation: juicy-trail-${this.config.style} ${this.config.fadeTime}ms ease-out forwards;
     `;
 
-    document.body.appendChild(ghost);
+    (this.config.container || document.body).appendChild(ghost);
 
     setTimeout(() => {
       ghost.remove();
