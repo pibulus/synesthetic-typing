@@ -8,12 +8,72 @@
   <meta property="og:title" content="JuicyTyping 🌈 — typing that sparks joy">
   <meta property="og:description" content="Rainbow trails, sparkles &amp; ripples on every keystroke. Framework-agnostic, zero dependencies. Type in the live playground.">
   <meta property="og:url" content="https://pibulus.github.io/synesthetic-typing/demo/">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://pibulus.github.io/synesthetic-typing/demo/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://pibulus.github.io/synesthetic-typing/demo/og-image.png">
+  <meta name="twitter:title" content="JuicyTyping 🌈 — typing that sparks joy">
+  <meta name="twitter:description" content="Rainbow trails, sparkles &amp; ripples on every keystroke. Framework-agnostic, zero dependencies.">
+  <meta name="description" content="A live playground for JuicyTyping — a framework-agnostic, zero-dependency library that adds rainbow trails, sparkles and ripples to any input as you type.">
+  <link rel="canonical" href="https://pibulus.github.io/synesthetic-typing/demo/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
     /* ===================================================================
-       PABLO'S PASTEL-PUNK DESIGN SYSTEM
+       PABLO'S PASTEL-PUNK DESIGN SYSTEM — Soft Neo Toybrut
+       8px grid · chunky borders · hard offset shadows · no pure #000/#FFF
     =================================================================== */
+
+    :root {
+      /* Soft Neo Toybrut palette */
+      --cream: #FFF9F0;
+      --pink: #FFE5EC;
+      --blue: #E8F4FD;
+      --ink: #2C2C2C;
+      --ink-soft: #4A4A4A;
+      --white-soft: #FFFDF9;
+
+      /* Keep the purple gradient family, warmed slightly */
+      --grad-start: #7C8CF0;
+      --grad-end: #8B5FBF;
+
+      --accent: #667eea;
+      --accent-2: #764ba2;
+
+      /* Section-tinted surfaces — subtle pastel differentiation so the eye
+         can scan "which zone am I in" without reading labels (60-30-10:
+         cream stays the 60% base, pink/blue are the 30% zone tints) */
+      --pink-border: #F0C9D6;
+      --blue-border: #C9DFF0;
+
+      /* Transition recipes (Pablo's interaction principles) */
+      --ease-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* 8px spacing grid */
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 16px;
+      --sp-4: 24px;
+      --sp-5: 32px;
+      --sp-6: 48px;
+      --sp-7: 64px;
+
+      --border: 3px solid var(--ink);
+      --shadow-sm: 3px 3px 0 var(--ink);
+      --shadow-md: 5px 5px 0 var(--ink);
+      --shadow-lg: 8px 8px 0 var(--ink);
+
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
 
     * {
       margin: 0;
@@ -21,72 +81,229 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
-      color: #333;
+      padding: var(--sp-4) var(--sp-3);
+      color: var(--ink);
       overflow-x: hidden;
     }
 
-    /* Header */
-    .header {
+    /* Custom focus rings everywhere — this is a typing app, keyboard users are THE audience */
+    :focus {
+      outline: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible,
+    .content-editable:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 2px;
+    }
+
+    /* ===================================================================
+       HERO — the page IS the pitch, so it leads big and proud
+    =================================================================== */
+    .hero {
+      width: 100%;
+      max-width: 900px;
       text-align: center;
-      margin-bottom: 3rem;
-      animation: fadeInDown 0.8s ease-out;
+      margin-bottom: var(--sp-6);
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      background: var(--white-soft);
+      border: var(--border);
+      border-radius: var(--radius-pill);
+      padding: var(--sp-1) var(--sp-3);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--sp-4);
     }
 
     h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      color: white;
-      text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
-      margin-bottom: 0.5rem;
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      line-height: 1.1;
+      font-weight: 700;
+      color: var(--white-soft);
+      text-shadow: var(--shadow-md);
+      margin-bottom: var(--sp-3);
       letter-spacing: -1px;
     }
 
     .tagline {
-      font-size: 1.2rem;
-      color: rgba(255,255,255,0.9);
-      font-weight: 300;
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+      font-weight: 500;
+      max-width: 46ch;
+      margin: 0 auto var(--sp-6);
     }
 
-    /* Main Container */
+    /* Hero type-here input — ONE primary action leads before the variety grid */
+    .hero-type {
+      background: var(--cream);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: var(--sp-5) var(--sp-4);
+      text-align: left;
+    }
+
+    .hero-type-label {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--sp-2);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    #hero-input {
+      width: 100%;
+      padding: var(--sp-3);
+      font-size: 1.3rem;
+      font-family: var(--font-body);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--white-soft);
+      color: var(--ink);
+      transition: box-shadow 0.2s var(--ease-smooth), transform 0.2s var(--ease-smooth);
+      min-height: 44px;
+    }
+
+    #hero-input::placeholder {
+      color: #9A9284;
+    }
+
+    #hero-input:focus-visible {
+      box-shadow: var(--shadow-sm);
+      transform: translate(-2px, -2px);
+    }
+
+    #hero-input:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .hero-hint {
+      margin-top: var(--sp-3);
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      flex-wrap: wrap;
+    }
+
+    .hero-hint kbd {
+      font-family: var(--font-display);
+      background: var(--white-soft);
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      padding: 1px 8px;
+      font-size: 0.8rem;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    /* ===================================================================
+       MAIN CONTAINER
+    =================================================================== */
     .container {
       width: 100%;
       max-width: 900px;
-      animation: fadeInUp 0.8s ease-out 0.2s both;
+      animation: fadeInUp 0.6s ease-out 0.15s both;
     }
 
-    /* Test Areas */
-    .test-area {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow:
-        0 10px 40px rgba(0,0,0,0.1),
-        0 2px 10px rgba(0,0,0,0.05);
-      border: 3px solid transparent;
-      transition: all 0.3s ease;
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white-soft);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: var(--sp-3);
+      opacity: 0.85;
     }
+
+    /* Test Areas — secondary variety grid, demoted below the hero action */
+    .test-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-7);
+    }
+
+    @media (min-width: 640px) {
+      .test-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .test-grid .test-area:nth-child(4),
+      .test-grid .test-area:nth-child(5) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .test-area {
+      background: var(--white-soft);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: var(--sp-4);
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    /* Alternate a whisper of pink/blue across the grid — scannable zones,
+       still reads as "one family" since the border/shadow/ink stay constant */
+    .test-grid .test-area:nth-child(3n+1) { background: var(--pink); }
+    .test-grid .test-area:nth-child(3n+2) { background: var(--blue); }
 
     .test-area:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 15px 50px rgba(0,0,0,0.15),
-        0 5px 15px rgba(0,0,0,0.08);
+      transform: translate(-2px, -2px);
+      /* shadow jump on hover is fine (no transition on it — instant swap,
+         zero layout thrash, only transform animates) */
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .test-area:active {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--ink);
     }
 
     .test-area h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #667eea;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
       font-weight: 700;
+      margin-bottom: var(--sp-2);
+      color: var(--accent-2);
     }
 
     /* Input Fields */
@@ -95,69 +312,146 @@
     input[type="search"],
     textarea {
       width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-      border: 3px solid #e0e0e0;
-      border-radius: 12px;
+      padding: var(--sp-3);
+      font-size: 1rem;
+      min-height: 44px;
+      border: 2px solid #DCD4C4;
+      border-radius: var(--radius-sm);
       outline: none;
-      transition: all 0.3s ease;
+      transition: border-color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
       font-family: inherit;
-      background: #f9f9f9;
+      background: var(--white-soft);
+      color: var(--ink);
     }
 
-    input:focus,
-    textarea:focus {
-      border-color: #667eea;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    input:focus-visible,
+    textarea:focus-visible {
+      border-color: var(--accent-2);
+      background: var(--white-soft);
+      box-shadow: 2px 2px 0 var(--ink);
     }
 
     textarea {
-      min-height: 150px;
+      min-height: 140px;
       resize: vertical;
     }
 
     /* Content Editable */
     .content-editable {
       min-height: 100px;
-      padding: 1rem;
-      border: 3px solid #e0e0e0;
-      border-radius: 12px;
-      background: #f9f9f9;
+      padding: var(--sp-3);
+      border: 2px solid #DCD4C4;
+      border-radius: var(--radius-sm);
+      background: var(--white-soft);
       outline: none;
-      transition: all 0.3s ease;
-      font-size: 1.1rem;
+      transition: border-color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+      font-size: 1rem;
       line-height: 1.6;
+      color: var(--ink);
     }
 
-    .content-editable:focus {
-      border-color: #667eea;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    .content-editable:focus-visible {
+      border-color: var(--accent-2);
+      background: var(--white-soft);
+      box-shadow: 2px 2px 0 var(--ink);
     }
 
-    /* Controls */
+    /* ===================================================================
+       TYPE SPRINT — a tiny game: type the line, chase the combo
+    =================================================================== */
+    .sprint {
+      background: var(--cream);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: var(--sp-4);
+      margin-bottom: var(--sp-6);
+    }
+
+    .sprint-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-3);
+    }
+
+    .sprint-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-2);
+    }
+
+    .sprint-combo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      background: var(--white-soft);
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 2px 12px;
+      box-shadow: 2px 2px 0 var(--ink);
+      font-size: 0.9rem;
+    }
+
+    .sprint-phrase {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: var(--sp-3);
+      letter-spacing: 0.3px;
+      user-select: none;
+      color: var(--ink);
+    }
+
+    .sprint-phrase .done { color: var(--accent-2); opacity: 0.55; }
+    .sprint-phrase .miss { background: #FFD2DC; border-radius: 3px; color: #B3405E; }
+    .sprint-phrase .now {
+      border-bottom: 3px solid var(--accent);
+      animation: sprint-blink 1s steps(2) infinite;
+    }
+
+    @keyframes sprint-blink {
+      50% { border-color: transparent; }
+    }
+
+    .sprint-stats {
+      margin-top: var(--sp-3);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    .sprint.finished .sprint-stats {
+      color: var(--accent-2);
+    }
+
+    /* ===================================================================
+       CONTROLS
+    =================================================================== */
     .controls {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow:
-        0 10px 40px rgba(0,0,0,0.1),
-        0 2px 10px rgba(0,0,0,0.05);
-      animation: fadeInUp 0.8s ease-out 0.4s both;
+      background: var(--white-soft);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: var(--sp-4);
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.6s ease-out 0.3s both;
     }
 
     .controls h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: #764ba2;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: var(--sp-4);
+      color: var(--accent-2);
       font-weight: 700;
     }
 
     .control-group {
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: var(--sp-4);
+      padding-bottom: var(--sp-4);
+      border-bottom: 2px dashed #E5DDCC;
     }
 
     .control-group:last-child {
@@ -166,127 +460,208 @@
       padding-bottom: 0;
     }
 
+    /* Tweak Lab is the densest, most "lab-coat" zone — a whisper of pink
+       marks it as its own territory inside the Controls card */
+    .control-group:has(#ripple-shape) {
+      background: var(--pink);
+      border: 2px solid var(--pink-border);
+      border-radius: var(--radius-sm);
+      padding: var(--sp-3);
+      border-bottom: 2px solid var(--pink-border);
+      margin-bottom: var(--sp-4);
+    }
+
     .control-label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-bottom: var(--sp-3);
       display: block;
-      color: #555;
-      font-size: 0.95rem;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
 
     /* Theme Selector */
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 0.5rem;
+      gap: var(--sp-2);
     }
 
     .theme-btn {
-      padding: 0.75rem 1rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      background: white;
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+      border: 2px solid #DCD4C4;
+      border-radius: var(--radius-sm);
+      background: var(--white-soft);
+      color: var(--ink);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform 0.2s var(--ease-bouncy), background 0.15s var(--ease-smooth), border-color 0.15s var(--ease-smooth);
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: inherit;
       text-align: center;
     }
 
     .theme-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translate(-1px, -1px) scale(1.02);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .theme-btn:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
     }
 
     .theme-btn.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      color: var(--white-soft);
+      border-color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+      transform: translate(-1px, -1px);
+    }
+
+    .theme-btn.active:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    /* Each theme button carries a rail painted with its theme's REAL palette
+       (--swatch is set per-button by the theme-selector JS) — the 11-button
+       wall becomes scannable by color, not just by reading names. */
+    .theme-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 6px;
+      background: var(--swatch, linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%));
+      transform-origin: top;
+      transition: transform 0.2s var(--ease-smooth);
+    }
+
+    .theme-btn:hover::before,
+    .theme-btn.active::before {
+      transform: scaleY(1.5);
     }
 
     /* Module Toggles */
     .module-toggles {
       display: flex;
-      gap: 1rem;
+      gap: var(--sp-2);
       flex-wrap: wrap;
     }
 
     .toggle-btn {
-      padding: 0.75rem 1.5rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 25px;
-      background: white;
+      padding: var(--sp-2) var(--sp-4);
+      min-height: 44px;
+      border: 2px solid #DCD4C4;
+      border-radius: var(--radius-pill);
+      background: var(--white-soft);
+      color: var(--ink);
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 600;
-      font-size: 0.95rem;
+      transition: transform 0.2s var(--ease-bouncy), background 0.15s var(--ease-smooth), border-color 0.15s var(--ease-smooth);
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-family: inherit;
     }
 
     .toggle-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translate(-1px, -1px) scale(1.02);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .toggle-btn:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
     }
 
     .toggle-btn.active {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
+      background: var(--accent);
+      color: var(--white-soft);
+      border-color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+      transform: translate(-1px, -1px);
+    }
+
+    .toggle-btn.active:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
     }
 
     /* Tweak Lab */
     .tweak-row {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--sp-3);
       flex-wrap: wrap;
-      margin-bottom: 0.85rem;
+      margin-bottom: var(--sp-3);
     }
 
     .tweak-name {
       font-size: 0.85rem;
-      font-weight: 600;
-      color: #666;
+      font-weight: 700;
+      color: var(--ink-soft);
       min-width: 95px;
     }
 
     .pill-group {
       display: flex;
-      gap: 0.4rem;
+      gap: var(--sp-2);
       flex-wrap: wrap;
     }
 
     .pill {
-      padding: 0.4rem 0.9rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 20px;
-      background: white;
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+      border: 2px solid #DCD4C4;
+      border-radius: var(--radius-pill);
+      background: var(--white-soft);
+      color: var(--ink);
       cursor: pointer;
       font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
+      font-weight: 700;
+      font-family: inherit;
+      transition: transform 0.2s var(--ease-bouncy), background 0.15s var(--ease-smooth), border-color 0.15s var(--ease-smooth);
     }
 
     .pill:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transform: translate(-1px, -1px) scale(1.02);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .pill:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
     }
 
     .pill.active {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
+      background: var(--accent);
+      color: var(--white-soft);
+      border-color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+      transform: translate(-1px, -1px);
+    }
+
+    .pill.active:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
     }
 
     .tweak-slider {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.6rem;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-3);
       font-size: 0.85rem;
-      color: #666;
-      font-weight: 600;
+      color: var(--ink-soft);
+      font-weight: 700;
+      flex-wrap: wrap;
     }
 
     .tweak-slider span {
@@ -295,61 +670,150 @@
 
     .tweak-slider input[type="range"] {
       flex: 1;
-      accent-color: #667eea;
+      min-width: 120px;
+      accent-color: var(--accent-2);
       cursor: pointer;
+      height: 44px;
     }
 
+    /* The ONE primary action in Tweak Lab (Von Restorff) — everything else
+       in this card is pastel/quiet, this stays the loudest accent gradient
+       so the eye lands here after fiddling with knobs. */
     #copy-config {
       width: 100%;
-      margin-top: 0.75rem;
-      padding: 0.85rem 1.5rem;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      min-height: 52px;
+      margin-top: var(--sp-3);
+      padding: var(--sp-3) var(--sp-4);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      color: var(--white-soft);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-family: var(--font-display);
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s var(--ease-bouncy);
     }
 
     #copy-config:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(118, 75, 162, 0.4);
+      transform: translate(-2px, -2px) scale(1.02);
+      box-shadow: var(--shadow-md);
     }
 
-    /* Stats Display */
+    #copy-config:active {
+      transform: translate(1px, 1px) scale(0.99);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    /* Stats Display — the numbers are the reward for typing, they should
+       feel like a scoreboard, not a spec sheet */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      background: #f5f5f5;
-      padding: 1rem;
-      border-radius: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: var(--sp-3);
+      background: var(--blue);
+      border: 2px solid var(--blue-border);
+      padding: var(--sp-3);
+      border-radius: var(--radius-sm);
     }
 
     .stat-item {
       text-align: center;
+      padding: var(--sp-2) var(--sp-1);
+      border-radius: var(--radius-sm);
+      transition: background 0.2s var(--ease-smooth);
+    }
+
+    .stat-item:hover {
+      background: rgba(255, 255, 255, 0.5);
     }
 
     .stat-value {
-      font-size: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #667eea;
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      /* subtle text-lift makes the numbers feel like they're winning something,
+         without any layout-triggering animation (text-shadow doesn't reflow) */
+      text-shadow: 2px 2px 0 rgba(102, 126, 234, 0.15);
     }
 
     .stat-label {
-      font-size: 0.85rem;
-      color: #666;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    #stat-peak {
+      /* Peak WPM is the brag stat — Von Restorff pop within the stat row */
+      color: var(--accent);
+    }
+
+    /* Master toggle gets its own visual weight — it's the kill switch */
+    #master-toggle {
+      font-family: var(--font-display);
+      font-size: 1rem;
+    }
+
+    /* ===================================================================
+       FOOTER
+    =================================================================== */
+    .footer {
+      width: 100%;
+      max-width: 900px;
+      margin-top: var(--sp-7);
+      padding-top: var(--sp-5);
+      padding-bottom: var(--sp-4);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      min-height: 44px;
+      padding: var(--sp-2) var(--sp-4);
+      background: var(--white-soft);
+      color: var(--ink);
+      border: var(--border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.2s var(--ease-bouncy);
+    }
+
+    .footer-link:hover {
+      transform: translate(-2px, -2px) scale(1.02);
+      box-shadow: var(--shadow-md);
+    }
+
+    .footer-link:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .footer-note {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
     }
 
     /* Animations */
     @keyframes fadeInDown {
       from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-16px);
       }
       to {
         opacity: 1;
@@ -360,11 +824,20 @@
     @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(16px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
     }
 
@@ -388,63 +861,98 @@
       100% { background-position: 200% 50%; }
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
+    /* ===================================================================
+       RESPONSIVE — mobile-first is the whole point, 375px is home base
+    =================================================================== */
+    @media (max-width: 640px) {
       body {
-        padding: 1rem;
+        padding: var(--sp-3) var(--sp-2);
       }
 
-      h1 {
-        font-size: 2rem;
+      .hero {
+        margin-bottom: var(--sp-5);
+      }
+
+      .hero-type {
+        padding: var(--sp-4) var(--sp-3);
       }
 
       .test-area,
       .controls {
-        padding: 1.5rem;
+        padding: var(--sp-3);
       }
 
       .theme-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+
+      .tweak-slider span {
+        min-width: 100%;
+      }
+
+      #copy-config {
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <div class="header">
+  <!-- Hero — the page IS the pitch. One primary action, up front. -->
+  <div class="hero">
+    <span class="eyebrow">🌈 Zero dependencies · Framework-agnostic</span>
     <h1>
       <span class="rainbow-text">JuicyTyping</span>
     </h1>
-    <p class="tagline">Transform your typing into a synesthetic experience ✨</p>
+    <p class="tagline">Transform your typing into a synesthetic experience — rainbow trails, sparkles &amp; ripples on every keystroke. ✨</p>
+
+    <div class="hero-type">
+      <label class="hero-type-label" for="hero-input">👉 Give it a spin</label>
+      <input type="text" id="hero-input" placeholder="Start typing to see the magic..." autocomplete="off" autofocus />
+      <p class="hero-hint">Tweak the vibe below with <kbd>Theme</kbd> and <kbd>🧪 Tweak Lab</kbd> — every input on this page is live.</p>
+    </div>
   </div>
 
   <!-- Main Container -->
   <div class="container">
+    <!-- Type Sprint — tiny typing game, zero deps, pure juice -->
+    <div class="sprint">
+      <div class="sprint-head">
+        <span class="sprint-title">⚡ Type Sprint</span>
+        <span class="sprint-combo" id="sprint-combo" title="Combo streak — misses reset it!">🔥 0</span>
+      </div>
+      <p class="sprint-phrase" id="sprint-phrase" aria-live="polite"></p>
+      <input type="text" id="sprint-input" placeholder="Type the line above — go!" autocomplete="off" spellcheck="false" aria-label="Type Sprint game input" />
+      <p class="sprint-stats" id="sprint-stats">Finish the line to see your WPM &amp; accuracy</p>
+    </div>
+
     <!-- Test Areas -->
-    <div class="test-area">
-      <h2>📝 Single Line Input</h2>
-      <input type="text" placeholder="Type here to see the magic..." />
-    </div>
+    <p class="section-label">More surfaces to play with</p>
+    <div class="test-grid">
+      <div class="test-area">
+        <h2>📝 Single Line Input</h2>
+        <input type="text" placeholder="Type here to see the magic..." />
+      </div>
 
-    <div class="test-area">
-      <h2>✉️ Email Input</h2>
-      <input type="email" placeholder="your@email.com" />
-    </div>
+      <div class="test-area">
+        <h2>✉️ Email Input</h2>
+        <input type="email" placeholder="your@email.com" />
+      </div>
 
-    <div class="test-area">
-      <h2>🔍 Search Input</h2>
-      <input type="search" placeholder="Search for something magical..." />
-    </div>
+      <div class="test-area">
+        <h2>🔍 Search Input</h2>
+        <input type="search" placeholder="Search for something magical..." />
+      </div>
 
-    <div class="test-area">
-      <h2>📖 Text Area</h2>
-      <textarea placeholder="Write your story here..."></textarea>
-    </div>
+      <div class="test-area">
+        <h2>📖 Text Area</h2>
+        <textarea placeholder="Write your story here..."></textarea>
+      </div>
 
-    <div class="test-area">
-      <h2>✏️ Content Editable</h2>
-      <div class="content-editable" contenteditable="true">
-        Click here and start typing. This is a contenteditable div!
+      <div class="test-area">
+        <h2>✏️ Content Editable</h2>
+        <div class="content-editable" contenteditable="true">
+          Click here and start typing. This is a contenteditable div!
+        </div>
       </div>
     </div>
 
@@ -541,12 +1049,21 @@
 
       <!-- Master Toggle -->
       <div class="control-group">
-        <button class="toggle-btn active" id="master-toggle" style="width: 100%;">
+        <button class="toggle-btn active" id="master-toggle" style="width: 100%; min-height: 52px;">
           Effects: ON
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <a class="footer-link" href="https://github.com/pibulus/synesthetic-typing" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <span>View on GitHub</span>
+    </a>
+    <p class="footer-note">Made with 💜 by Pablo — pastel-punk, zero dependencies, one job done well.</p>
+  </footer>
 
   <!-- Scripts -->
   <script type="module">
@@ -601,6 +1118,8 @@
       btn.className = 'theme-btn';
       btn.textContent = themes[themeName].name;
       btn.dataset.theme = themeName;
+      // Paint the button's rail with the theme's actual palette
+      btn.style.setProperty('--swatch', `linear-gradient(90deg, ${themes[themeName].colors.join(', ')})`);
 
       if (themeName === 'brutal-rainbow') {
         btn.classList.add('active');
@@ -797,6 +1316,112 @@
       }
       setTimeout(() => { btn.textContent = '📋 Copy this recipe'; }, 2000);
     });
+
+    // ===================================================================
+    // TYPE SPRINT — tiny typing game; the engine's effects ride along free
+    // ===================================================================
+    const SPRINT_PHRASES = [
+      'every keystroke should spark joy',
+      'the quick brown fox rides a rainbow comet',
+      'pastel punk apps with personality utility and soul',
+      'type like you mean it sparkle like you dont',
+      'compression is elegance elegance is grace',
+      'software is politics keep it soft keep it punk',
+      'vampire hours produce the juiciest code',
+      'weaponized simplicity one thing done perfectly'
+    ];
+
+    const sprintPhraseEl = $('sprint-phrase');
+    const sprintInput = $('sprint-input');
+    const sprintStats = $('sprint-stats');
+    const sprintComboEl = $('sprint-combo');
+    const sprintCard = document.querySelector('.sprint');
+
+    let sprintTarget = '';
+    let sprintStart = null;
+    let sprintMisses = 0;
+    let sprintCombo = 0;
+    let sprintBestCombo = 0;
+    let sprintLastLen = 0;
+
+    function loadSprint() {
+      let next;
+      do {
+        next = SPRINT_PHRASES[Math.floor(Math.random() * SPRINT_PHRASES.length)];
+      } while (next === sprintTarget && SPRINT_PHRASES.length > 1);
+      sprintTarget = next;
+      sprintStart = null;
+      sprintMisses = 0;
+      sprintLastLen = 0;
+      sprintInput.value = '';
+      sprintInput.disabled = false;
+      sprintPhraseEl.innerHTML = '';
+      [...sprintTarget].forEach((ch, i) => {
+        const s = document.createElement('span');
+        s.textContent = ch;
+        if (i === 0) s.className = 'now';
+        sprintPhraseEl.appendChild(s);
+      });
+      sprintStats.textContent = 'Finish the line to see your WPM & accuracy';
+      sprintCard.classList.remove('finished');
+    }
+
+    sprintInput.addEventListener('input', () => {
+      const typed = sprintInput.value;
+      if (!sprintStart && typed.length) sprintStart = Date.now();
+
+      // longest correct prefix decides what's done vs missed
+      let correct = 0;
+      while (correct < typed.length && typed[correct] === sprintTarget[correct]) correct++;
+
+      // only score when typing forward (backspace doesn't touch the combo)
+      if (typed.length > sprintLastLen) {
+        if (typed.length > correct) {
+          sprintMisses++;
+          sprintCombo = 0;
+        } else {
+          sprintCombo++;
+          sprintBestCombo = Math.max(sprintBestCombo, sprintCombo);
+        }
+      }
+      sprintLastLen = typed.length;
+      sprintComboEl.textContent = `🔥 ${sprintCombo}`;
+
+      [...sprintPhraseEl.children].forEach((s, i) => {
+        s.className = i < correct ? 'done'
+          : i < typed.length ? 'miss'
+          : i === typed.length ? 'now'
+          : '';
+      });
+
+      if (typed === sprintTarget) {
+        const mins = (Date.now() - sprintStart) / 60000;
+        const wpm = mins > 0 ? Math.round((sprintTarget.length / 5) / mins) : 0;
+        const acc = Math.round(100 * sprintTarget.length / (sprintTarget.length + sprintMisses));
+        // >300 WPM means paste or robot — the world record is ~216
+        const wpmLabel = wpm > 300 ? '🤖 robot??' : `⚡ ${wpm} WPM`;
+        sprintStats.textContent = `${wpmLabel} · 🎯 ${acc}% accuracy · 🔥 best combo ${sprintBestCombo} — next line incoming...`;
+        sprintCard.classList.add('finished');
+        sprintInput.disabled = true;
+
+        // celebrate with the library's own fireworks (respects the master toggle)
+        if (juicy.config.enabled) {
+          const r = sprintInput.getBoundingClientRect();
+          const center = { x: r.left + r.width / 2, y: r.top };
+          [0, 180, 360].forEach((delay, i) => setTimeout(() => {
+            sparkleModule.createBurst({ x: center.x + (i - 1) * 120, y: center.y }, 1);
+          }, delay));
+          rippleModule.createBigRipple(center);
+        }
+
+        setTimeout(() => {
+          loadSprint();
+          sprintInput.focus();
+        }, 2200);
+      }
+    });
+
+    loadSprint();
 
     // Update stats periodically
     setInterval(() => {
