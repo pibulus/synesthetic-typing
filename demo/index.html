@@ -30,8 +30,6 @@
     :root {
       /* Soft Neo Toybrut palette */
       --cream: #FFF9F0;
-      --pink: #FFE5EC;
-      --blue: #E8F4FD;
       --ink: #2C2C2C;
       --ink-soft: #4A4A4A;
       --white-soft: #FFFDF9;
@@ -42,12 +40,10 @@
 
       --accent: #667eea;
       --accent-2: #764ba2;
-
-      /* Section-tinted surfaces — subtle pastel differentiation so the eye
-         can scan "which zone am I in" without reading labels (60-30-10:
-         cream stays the 60% base, pink/blue are the 30% zone tints) */
-      --pink-border: #F0C9D6;
-      --blue-border: #C9DFF0;
+      /* Quiet-active: selected controls get an ink-tinted wash, not a solid
+         fill. Solid accent is earned by exactly ONE element per card. */
+      --accent-tint: #E7E9FA;
+      --accent-tint-hover: #DCE0F7;
 
       /* Transition recipes (Pablo's interaction principles) */
       --ease-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -113,8 +109,7 @@
     }
 
     input:focus-visible,
-    textarea:focus-visible,
-    .content-editable:focus-visible {
+    textarea:focus-visible {
       outline: 3px solid var(--accent-2);
       outline-offset: 2px;
     }
@@ -250,26 +245,11 @@
       opacity: 0.8;
     }
 
-    /* Test Areas — secondary variety grid, demoted below the hero action */
-    .test-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--sp-3);
-      margin-bottom: var(--sp-7);
+    /* The one writing canvas — quiet border, the textarea is the show */
+    .canvas-card {
+      margin-bottom: var(--sp-6);
     }
 
-    @media (min-width: 640px) {
-      .test-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .test-grid .test-area:nth-child(4),
-      .test-grid .test-area:nth-child(5) {
-        grid-column: 1 / -1;
-      }
-    }
-
-    /* Test cards recede — quiet borders, no shadows. The inputs (and the
-       effects they fire) are the show, not the card chrome. */
     .test-area {
       background: var(--white-soft);
       border: var(--border-quiet);
@@ -306,7 +286,7 @@
       outline: none;
       transition: border-color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
       font-family: inherit;
-      background: var(--white-soft);
+      background: var(--cream);
       color: var(--ink);
     }
 
@@ -320,26 +300,6 @@
     textarea {
       min-height: 140px;
       resize: vertical;
-    }
-
-    /* Content Editable */
-    .content-editable {
-      min-height: 100px;
-      padding: var(--sp-3);
-      border: var(--border-quiet);
-      border-radius: var(--radius-sm);
-      background: var(--white-soft);
-      outline: none;
-      transition: border-color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
-      font-size: 1rem;
-      line-height: 1.6;
-      color: var(--ink);
-    }
-
-    .content-editable:focus-visible {
-      border-color: var(--accent-2);
-      background: var(--white-soft);
-      box-shadow: 2px 2px 0 var(--ink);
     }
 
     /* ===================================================================
@@ -425,18 +385,29 @@
       animation: fadeInUp 0.6s ease-out 0.3s both;
     }
 
+    .controls-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-4);
+    }
+
     .controls h2 {
       font-family: var(--font-display);
       font-size: 1.15rem;
-      margin-bottom: var(--sp-4);
       color: var(--ink);
       font-weight: 700;
     }
 
+    #master-toggle {
+      font-size: 0.85rem;
+    }
+
     .control-group {
-      margin-bottom: var(--sp-4);
+      margin-bottom: var(--sp-5);
       padding-bottom: var(--sp-4);
-      border-bottom: 2px dashed #E5DDCC;
+      border-bottom: 2px dashed var(--line);
     }
 
     .control-group:last-child {
@@ -489,11 +460,15 @@
     }
 
     .theme-btn.active {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-      color: var(--white-soft);
+      background: var(--accent-tint);
+      color: var(--ink);
       border-color: var(--ink);
       box-shadow: 2px 2px 0 var(--ink);
       transform: translate(-1px, -1px);
+    }
+
+    .theme-btn.active:hover {
+      background: var(--accent-tint-hover);
     }
 
     .theme-btn.active:active {
@@ -501,27 +476,31 @@
       box-shadow: 1px 1px 0 var(--ink);
     }
 
-    /* Each theme button carries a rail painted with its theme's REAL palette
-       (--swatch is set per-button by the theme-selector JS) — the 11-button
-       wall becomes scannable by color, not just by reading names. */
+    /* Each theme button carries a small swatch chip painted with its theme's
+       REAL palette (--swatch is set per-button by the theme-selector JS) —
+       scannable by color without the old full-width rainbow-rail noise. */
     .theme-btn {
       position: relative;
-      overflow: hidden;
+      padding-left: calc(var(--sp-3) + 20px + var(--sp-2));
+      text-align: left;
     }
 
     .theme-btn::before {
       content: '';
       position: absolute;
-      inset: 0 0 auto 0;
-      height: 4px;
+      left: var(--sp-3);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 6px;
+      border-radius: var(--radius-pill);
       background: var(--swatch, linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%));
-      transform-origin: top;
       transition: transform 0.2s var(--ease-smooth);
     }
 
     .theme-btn:hover::before,
     .theme-btn.active::before {
-      transform: scaleY(1.5);
+      transform: translateY(-50%) scaleX(1.3);
     }
 
     /* Module Toggles */
@@ -555,12 +534,18 @@
       box-shadow: 1px 1px 0 var(--ink);
     }
 
+    /* Quiet-active: inked outline + pale accent tint, not a solid fill.
+       This is a status pill (Effects: ON / module on-off), not a hero. */
     .toggle-btn.active {
-      background: var(--accent);
-      color: var(--white-soft);
+      background: var(--accent-tint);
+      color: var(--ink);
       border-color: var(--ink);
       box-shadow: 2px 2px 0 var(--ink);
       transform: translate(-1px, -1px);
+    }
+
+    .toggle-btn.active:hover {
+      background: var(--accent-tint-hover);
     }
 
     .toggle-btn.active:active {
@@ -570,10 +555,10 @@
 
     /* Tweak Lab */
     .tweak-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 110px 1fr;
       align-items: center;
       gap: var(--sp-3);
-      flex-wrap: wrap;
       margin-bottom: var(--sp-3);
     }
 
@@ -581,7 +566,13 @@
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--ink-soft);
-      min-width: 95px;
+    }
+
+    @media (max-width: 480px) {
+      .tweak-row {
+        grid-template-columns: 1fr;
+        gap: var(--sp-1);
+      }
     }
 
     .pill-group {
@@ -615,11 +606,15 @@
     }
 
     .pill.active {
-      background: var(--accent);
-      color: var(--white-soft);
+      background: var(--accent-tint);
+      color: var(--ink);
       border-color: var(--ink);
       box-shadow: 2px 2px 0 var(--ink);
       transform: translate(-1px, -1px);
+    }
+
+    .pill.active:hover {
+      background: var(--accent-tint-hover);
     }
 
     .pill.active:active {
@@ -627,27 +622,34 @@
       box-shadow: 1px 1px 0 var(--ink);
     }
 
+    .tweak-sliders {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-2) var(--sp-4);
+      margin-bottom: var(--sp-2);
+    }
+
+    @media (min-width: 640px) {
+      .tweak-sliders {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
     .tweak-slider {
       display: flex;
-      align-items: center;
-      gap: var(--sp-3);
-      margin-bottom: var(--sp-3);
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sp-1);
       font-size: 0.85rem;
       color: var(--ink-soft);
       font-weight: 700;
-      flex-wrap: wrap;
-    }
-
-    .tweak-slider span {
-      min-width: 160px;
     }
 
     .tweak-slider input[type="range"] {
-      flex: 1;
-      min-width: 120px;
+      width: 100%;
       accent-color: var(--accent-2);
       cursor: pointer;
-      height: 44px;
+      height: 32px;
     }
 
     /* The ONE primary action in Tweak Lab (Von Restorff) — everything else
@@ -655,16 +657,16 @@
        so the eye lands here after fiddling with knobs. */
     #copy-config {
       width: 100%;
-      min-height: 52px;
+      min-height: 44px;
       margin-top: var(--sp-3);
-      padding: var(--sp-3) var(--sp-4);
+      padding: var(--sp-2) var(--sp-4);
       border: var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-pill);
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
       color: var(--white-soft);
       font-weight: 700;
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       box-shadow: var(--shadow-sm);
       transition: transform 0.2s var(--ease-bouncy);
@@ -680,55 +682,27 @@
       box-shadow: 1px 1px 0 var(--ink);
     }
 
-    /* Stats Display — the numbers are the reward for typing, they should
-       feel like a scoreboard, not a spec sheet */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: var(--sp-3);
-      background: var(--cream);
-      border: var(--border-quiet);
-      padding: var(--sp-3);
-      border-radius: var(--radius-sm);
+    /* Stats — one quiet line; the sprint game is where numbers get loud */
+    .stats-line {
+      display: flex;
+      gap: var(--sp-4);
+      flex-wrap: wrap;
     }
 
-    .stat-item {
-      text-align: center;
-      padding: var(--sp-2) var(--sp-1);
-      border-radius: var(--radius-sm);
-      transition: background 0.2s var(--ease-smooth);
-    }
-
-    .stat-item:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--ink);
-      font-variant-numeric: tabular-nums;
-      line-height: 1.2;
-    }
-
-    .stat-label {
-      font-size: 0.78rem;
+    .stat-chip {
+      font-size: 0.88rem;
       color: var(--ink-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 700;
+      font-weight: 600;
+    }
+
+    .stat-chip b {
+      font-family: var(--font-display);
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
     }
 
     #stat-peak {
-      /* Peak WPM is the brag stat — Von Restorff pop within the stat row */
-      color: var(--accent);
-    }
-
-    /* Master toggle gets its own visual weight — it's the kill switch */
-    #master-toggle {
-      font-family: var(--font-display);
-      font-size: 1rem;
+      color: var(--accent-2);
     }
 
     /* ===================================================================
@@ -813,25 +787,43 @@
       }
     }
 
-    /* Fun gradient text effect */
-    /* Sun-faded Kodachrome — the vintage-rainbow theme, worn as a crown */
+    /* Wordmark — hand-tuned static gradient, deepened for contrast on the
+       lavender wash. Persimmon→gold anchors the left (warm, appetizing),
+       teal→plum resolves the right (cool, rich) — no washed-out middle
+       stretch. A hairline ink stroke keeps letterforms crisp at this size,
+       plus a very soft drop shadow for lift (never the old glitch shadow). */
     .rainbow-text {
       background: linear-gradient(
         90deg,
-        #e8704a, #f4a93c, #ecc94b,
-        #8caa6a, #4a9d9c, #9a6a9e,
-        #e8704a
+        #D9481F 0%,
+        #E2861B 22%,
+        #D4AF37 42%,
+        #3F8F5C 58%,
+        #1F7A78 76%,
+        #7A4F8C 100%
       );
-      background-size: 200% 100%;
+      background-size: 100% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: rainbow-slide 10s linear infinite;
+      -webkit-text-stroke: 1px rgba(44, 44, 44, 0.5);
+      text-stroke: 1px rgba(44, 44, 44, 0.5);
+      filter: drop-shadow(0 2px 0 rgba(44, 44, 44, 0.12));
+      font-weight: 700;
+      letter-spacing: -0.5px;
     }
 
-    @keyframes rainbow-slide {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
+    /* Slow, subtle shimmer — a breath, not a rainbow disco */
+    @media (prefers-reduced-motion: no-preference) {
+      .rainbow-text {
+        background-size: 160% 100%;
+        animation: rainbow-shimmer 14s ease-in-out infinite;
+      }
+    }
+
+    @keyframes rainbow-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 45% 50%; }
     }
 
     /* ===================================================================
@@ -857,10 +849,6 @@
 
       .theme-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      }
-
-      .tweak-slider span {
-        min-width: 100%;
       }
 
       #copy-config {
@@ -898,40 +886,18 @@
       <p class="sprint-stats" id="sprint-stats">Finish the line to see your WPM &amp; accuracy</p>
     </div>
 
-    <!-- Test Areas -->
-    <p class="section-label">More surfaces to play with</p>
-    <div class="test-grid">
-      <div class="test-area">
-        <h2>📝 Single Line Input</h2>
-        <input type="text" placeholder="Type here to see the magic..." />
-      </div>
-
-      <div class="test-area">
-        <h2>✉️ Email Input</h2>
-        <input type="email" placeholder="your@email.com" />
-      </div>
-
-      <div class="test-area">
-        <h2>🔍 Search Input</h2>
-        <input type="search" placeholder="Search for something magical..." />
-      </div>
-
-      <div class="test-area">
-        <h2>📖 Text Area</h2>
-        <textarea placeholder="Write your story here..."></textarea>
-      </div>
-
-      <div class="test-area">
-        <h2>✏️ Content Editable</h2>
-        <div class="content-editable" contenteditable="true">
-          Click here and start typing. This is a contenteditable div!
-        </div>
-      </div>
+    <!-- Room to write — one bigger canvas instead of five lookalike cards -->
+    <div class="test-area canvas-card">
+      <h2>📖 Room to write</h2>
+      <textarea placeholder="Write your story here — longer thoughts, more sparkles..."></textarea>
     </div>
 
     <!-- Controls -->
     <div class="controls">
-      <h2>🎮 Controls</h2>
+      <div class="controls-head">
+        <h2>🎮 Controls</h2>
+        <button class="toggle-btn active" id="master-toggle">Effects: ON</button>
+      </div>
 
       <!-- Theme Selector -->
       <div class="control-group">
@@ -941,19 +907,18 @@
         </div>
       </div>
 
-      <!-- Module Toggles -->
-      <div class="control-group">
-        <label class="control-label">Modules</label>
-        <div class="module-toggles" id="module-toggles">
-          <button class="toggle-btn active" data-module="trail">Trail</button>
-          <button class="toggle-btn active" data-module="sparkle">Sparkle</button>
-          <button class="toggle-btn active" data-module="ripple">Ripple</button>
-        </div>
-      </div>
-
-      <!-- Tweak Lab -->
+      <!-- Tweak Lab (modules merged in — it's all one lab now) -->
       <div class="control-group">
         <label class="control-label">🧪 Tweak Lab</label>
+
+        <div class="tweak-row">
+          <span class="tweak-name">Effects</span>
+          <div class="module-toggles" id="module-toggles">
+            <button class="toggle-btn active" data-module="trail">Trail</button>
+            <button class="toggle-btn active" data-module="sparkle">Sparkle</button>
+            <button class="toggle-btn active" data-module="ripple">Ripple</button>
+          </div>
+        </div>
 
         <div class="tweak-row">
           <span class="tweak-name">Ripple shape</span>
@@ -983,48 +948,31 @@
           </div>
         </div>
 
-        <div class="tweak-slider">
-          <span>✨ Sparkle count: <b id="val-count">5</b></span>
-          <input type="range" id="tweak-count" min="1" max="15" value="5">
-        </div>
+        <div class="tweak-sliders">
+          <div class="tweak-slider">
+            <span>✨ Count: <b id="val-count">5</b></span>
+            <input type="range" id="tweak-count" min="1" max="15" value="5">
+          </div>
 
-        <div class="tweak-slider">
-          <span>↔️ Sparkle spread: <b id="val-spread">30</b>px</span>
-          <input type="range" id="tweak-spread" min="10" max="80" value="30">
-        </div>
+          <div class="tweak-slider">
+            <span>↔️ Spread: <b id="val-spread">30</b>px</span>
+            <input type="range" id="tweak-spread" min="10" max="80" value="30">
+          </div>
 
-        <div class="tweak-slider">
-          <span>⏱️ Trail fade: <b id="val-fade">800</b>ms</span>
-          <input type="range" id="tweak-fade" min="300" max="2000" step="50" value="800">
+          <div class="tweak-slider">
+            <span>⏱️ Fade: <b id="val-fade">800</b>ms</span>
+            <input type="range" id="tweak-fade" min="300" max="2000" step="50" value="800">
+          </div>
         </div>
 
         <button id="copy-config">📋 Copy this recipe</button>
       </div>
 
-      <!-- Stats -->
-      <div class="control-group">
-        <label class="control-label">Typing Stats</label>
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-value" id="stat-keystrokes">0</div>
-            <div class="stat-label">Keystrokes</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="stat-speed">0</div>
-            <div class="stat-label">WPM</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="stat-peak">0</div>
-            <div class="stat-label">Peak WPM</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Master Toggle -->
-      <div class="control-group">
-        <button class="toggle-btn active" id="master-toggle" style="width: 100%; min-height: 52px;">
-          Effects: ON
-        </button>
+      <!-- Stats — one quiet line, not a scoreboard -->
+      <div class="control-group stats-line">
+        <span class="stat-chip">⌨️ <b id="stat-keystrokes">0</b> keys</span>
+        <span class="stat-chip">⚡ <b id="stat-speed">0</b> wpm</span>
+        <span class="stat-chip">🔥 <b id="stat-peak">0</b> peak</span>
       </div>
     </div>
   </div>
